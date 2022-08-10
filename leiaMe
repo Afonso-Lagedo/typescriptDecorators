@@ -1,0 +1,24 @@
+####INSTALL
+NODE(LINUX): sudo apt-get install nodejs
+
+npm install - typescript
+
+For check:
+node -v
+npm -v
+tsc -v
+
+####CONFIG
+tsc --init
+
+Create two paste (in this exemple):
+BUILD >>> outDir
+SRC >>> rootDir
+
+Uncomment and insert name paste in tsconfig.json
+// "outDir": "./",
+// "rootDir": "./"   
+
+####BUILD
+tsc --watch SRC rootDir
+node NAMEFILE BUILD rootDir
