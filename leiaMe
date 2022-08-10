@@ -19,6 +19,10 @@ Uncomment and insert name paste in tsconfig.json
 // "outDir": "./",
 // "rootDir": "./"   
 
+For Decorators (10/08/2022 is version test)
+Uncomment
+//"experimentalDecorators": true,
+
 ####BUILD
 tsc --watch SRC rootDir
 node NAMEFILE BUILD rootDir
