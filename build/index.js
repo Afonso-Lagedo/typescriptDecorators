@@ -17,24 +17,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-//target = receive the class's constructors
-function logInfo(target) {
-    console.log(target);
-    console.log("test");
-}
-let System = class System {
-};
-System = __decorate([
-    logInfo //call Decorators
-], System);
-//####Factory standard#####
-function logInfo2(msg) {
+function setIpServer(newIp) {
     return (target) => {
-        console.log(`${msg}, ${target}`);
+        return class extends target {
+            constructor() {
+                super(...arguments);
+                this.ip = newIp;
+            }
+        };
     };
 }
-let System2 = class System2 {
+let Server = class Server {
 };
-System2 = __decorate([
-    logInfo2("test factory")
-], System2);
+Server = __decorate([
+    setIpServer("192.168.15.178")
+], Server);
+const serverOne = new Server();
+console.log(serverOne);

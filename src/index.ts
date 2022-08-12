@@ -11,27 +11,19 @@ Create
 Create the function with default parameters
 */
 
-//target = receive the class's constructors
-function logInfo(target:any){
-    console.log(target);
-    console.log("test");
-}
-
-@logInfo//call Decorators
-class System{
-
-}
-
-//####Factory standard#####
-function logInfo2(msg:string){
-    return (target:any) => {
-        console.log(`${msg}, ${target}`)
+function setIpServer(newIp: string){
+    return(target:any) =>{//target is constructor of class 
+        return class extends target{
+            ip = newIp;
+        }
     }
 }
 
-@logInfo2("test factory")
-class System2{
+@setIpServer("192.168.15.178")
+class Server{
 
 }
 
+const serverOne = new Server();
 
+console.log(serverOne);
