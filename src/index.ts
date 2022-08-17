@@ -1,46 +1,45 @@
 /*
 >> DECORATORS <<
 
-in Property
+in method. Decorators be called when method be called
 */
 
-function validateName(size:number){
-    //target = constructor
-    //key = property
-    return (target: any, key: string)=>{
-        let test = target[key];
+function checkAge(age:number){
+    return (target:any, key:string, descriptor: PropertyDescriptor) => {
+        /*console.log("Target: ", target);
+        console.log("Key: ", key);
+        console.log("Descriptor: ", descriptor);*/
 
-        const getter = () => test;
-
-        const setter = (value: string) => {
-            if(value === ""){
-                console.log("Can't be empty");
-            } else if(value.length < size){
-                console.log("The minimum size is five");
-            } else{
-                test = value;
+        /*Save the origin method*/
+        const originMethod = descriptor.value;
+        /*overwriting*/
+        descriptor.value = function() {
+            if (age < 18){
+                console.log("children");
+            }
+            else{
+                console.log("+18")
+                return originMethod.apply(this);
             }
         }
-
-        Object.defineProperty(target, key, {
-            get: getter,
-            set: setter
-        })
     }
 }
 
-class Game {
 
-    @validateName(5)
-    name:string;
+class Person {
+    name: string;
 
-    constructor(name:string){
+    constructor (name:string){
         this.name=name;
     }
+
+    @checkAge(21)
+    newPerson(){
+        console.log(`Hello ${this.name}`)
+    }
+
 }
 
-//const game1 = new Game(""); //return: Can't be empty
-//const game1 = new Game("GTA"); //return: The minimum size is five
-const game1 = new Game("FIFA 2022"); //return: FIFA 2022
+const personOne = new Person("Afonso")
 
-console.log(game1.name);
+personOne.newPerson();

@@ -2,7 +2,7 @@
 /*
 >> DECORATORS <<
 
-in Property
+in method. Decorators be called when method be called
 */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -10,38 +10,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-function validateName(size) {
-    //target = constructor
-    //key = property
-    return (target, key) => {
-        let test = target[key];
-        const getter = () => test;
-        const setter = (value) => {
-            if (value === "") {
-                console.log("Can't be empty");
-            }
-            else if (value.length < size) {
-                console.log("The minimum size is five");
+function checkAge(age) {
+    return (target, key, descriptor) => {
+        /*console.log("Target: ", target);
+        console.log("Key: ", key);
+        console.log("Descriptor: ", descriptor);*/
+        /*Save the origin method*/
+        const originMethod = descriptor.value;
+        /*overwriting*/
+        descriptor.value = function () {
+            if (age < 18) {
+                console.log("children");
             }
             else {
-                test = value;
+                console.log("+18");
+                return originMethod.apply(this);
             }
         };
-        Object.defineProperty(target, key, {
-            get: getter,
-            set: setter
-        });
     };
 }
-class Game {
+class Person {
     constructor(name) {
         this.name = name;
     }
+    newPerson() {
+        console.log(`Hello ${this.name}`);
+    }
 }
 __decorate([
-    validateName(5)
-], Game.prototype, "name", void 0);
-//const game1 = new Game(""); //return: Can't be empty
-//const game1 = new Game("GTA"); //return: The minimum size is five
-const game1 = new Game("FIFA 2022"); //return: FIFA 2022
-console.log(game1.name);
+    checkAge(21)
+], Person.prototype, "newPerson", null);
+const personOne = new Person("Afonso");
+personOne.newPerson();
